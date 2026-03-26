@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+  
+datasource db {
+  provider = "postgresql"
+}
+ model training_plan {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id String
+  plan_json Json
+  plan_text String
+  version Int @default(1)
+  @@index([user_id],map:"idx_training_plans_user_id")
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+
+ }
+model user_profiles{
+  user_id String @id
+  goal String @db.VarChar(20)
+  experience String @db.VarChar(20)
+  daysPerWeek Int
+  sessionDuration Int
+  equipment String @db.VarChar(20)
+  injuries String? //optional vayeko le
+  split String @db.VarChar(20)
+  update_at DateTime @default(now()) @db.Timestamptz(6)
+}
